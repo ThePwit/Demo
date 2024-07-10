@@ -13,12 +13,6 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <link
-    rel="icon"
-    type="image/png"
-    href="./assets/images/images.png"
-    class="tag"
-  />
   <body>
     <main>
       <div class="logo">
@@ -35,14 +29,7 @@
         <h2>Join Today.</h2>
         <br />
         <div class="buttons">
-          <a class="button google grey" id="google-login-btn"
-            ><img src="./assets/images/google (1).png" alt="" />Sign up with
-            Google</a
-          >
-          <a class="button apple grey"
-            ><img src="./assets/images/apple-logo.png" alt="" />Sign up with
-            Apple</a
-          >
+          <a class="button google grey" id="google-login-btn"><i class="fa-brands fa-google"></i>Sign up with Google</a>
         </div>
         <br />
         <div class="orline">
@@ -50,7 +37,7 @@
           <p>&nbsp;or&nbsp;</p>
           <div class="line1"></div>
         </div>
-        <button class="button create">Create account</button>
+        <button class="button create" id="create-acct-btn">Create account</button>
         <span class="tpc">
           By signing up, you agree to the
           <p style="color: rgb(29, 155, 240)">Terms of Service</p>
@@ -60,9 +47,61 @@
           <p style="color: rgb(29, 155, 240)">Cookie Use.</p>
         </span>
         <p class="ahaa">Already have an Account?</p>
-        <button class="button signin">Sign in</button>
+        <button id="sign-on-btn" class="button signin">Sign in</button>
       </div>
-    </main>
+      <div id="popupOverlay" class="overlay-container" style="display:none"> 
+        <div class="popup-box"> 
+          <i class="fa-brands fa-x-twitter"></i>
+            <h2>Create your account</h2> 
+            <form class="form-container"> 
+                <input class="form-input" type="text" 
+                       placeholder="Enter Your Name" 
+                       id="name" name="name" required>
+                <input class="form-input" type="text" 
+                       placeholder="Create a Username" 
+                       id="username" name="username" required> 
+                <input class="form-input"
+                       type="email" 
+                       placeholder="Enter Your Email"
+                       id="email" 
+                       name="email" required> 
+                <input class="form-input"
+                        type="password" 
+                        placeholder="Create A Password"
+                        id="password" 
+                        name="password" required> 
+  
+                <button id="btn-submit"class="btn-submit"  
+                        type="submit"> 
+                  Next 
+                  </button> 
+              </form>
+        </div> 
+      </div>
+      <div id="signInOverlay" class="overlay-container" style="display:none"> 
+        <div class="popup-box"> 
+          <i class="fa-brands fa-x-twitter"></i>
+            <h2>Sign In</h2> 
+            <form class="form-container"> 
+                <input class="form-input"
+                       type="email" 
+                       placeholder="Email"
+                       id="sign-in-email" 
+                       name="email" required> 
+                <input class="form-input"
+                        type="password" 
+                        placeholder="Password"
+                        id="sign-in-password" 
+                        name="password" required> 
+  
+                <button id="sign-in-btn"class="btn-submit"  
+                        type="submit"> 
+                  Sign In 
+                  </button> 
+              </form>
+        </div> 
+      </div>
+    </main> 
     <footer>
       <div class="links">
         <a href="">About</a><a href="">Download the X app</a

@@ -1,21 +1,23 @@
-@font-face {
-  font-family: "chirpFont";
-  src: url(./assets/fonts/ChirpBold.ttf);
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+
+.syne {
+  font-family: "Syne", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
-@font-face {
-  font-family: "chirpext";
-  src: url(./assets/fonts/ChirpExtendedHeavy.ttf);
-}
-@font-face {
-  font-family: "chirpreg";
-  src: url(./assets/fonts/ChirpRegular.ttf);
-}
+
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   background-color: rgb(0 0 0);
-  font-family: chirpFont;
+  font-family: Syne;
+}
+
+main .active_popup{
+  overflow: hidden;
+  filter: blur();
 }
 .logo {
   height: 435px;
@@ -62,7 +64,7 @@ footer {
   text-decoration: none;
   letter-spacing: 0.1px;
   color: inherit;
-  font-weight: chirpreg;
+  font-weight: Syne;
 }
 .links a:hover {
   text-decoration: underline;
@@ -85,7 +87,7 @@ footer {
   font-size: 70px;
   letter-spacing: 1px;
   margin-top: 90px;
-  font-family: chirpext;
+  font-family: Syne;
 }
 .form h2 {
   font-size: 30px;
@@ -115,6 +117,7 @@ footer {
   height: 40px;
   width: 300px;
   border-radius: 25px;
+  margin: 5px 0px;
   background-color: white;
   border: 0px solid white;
   cursor: pointer;
@@ -125,7 +128,7 @@ footer {
   font-weight: 700;
   font-size: 15px;
 }
-.button img {
+.button i {
   height: 20px;
   width: 20px;
   background-color: inherit;
@@ -143,7 +146,7 @@ span {
   font-size: 14px;
   color: rgb(113, 118, 123);
   margin-bottom: 50px;
-  font-family: chirpreg;
+  font-family: Syne;
 }
 .create {
   background-color: rgb(29 155 240);
@@ -167,6 +170,109 @@ span {
 .signin:hover {
   background-color: rgba(29, 156, 240, 0.142);
 }
+
+#signInOverlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background: rgba(0, 0, 0, 0.6); 
+  justify-content: center; 
+  align-items: center; 
+  opacity: 0; 
+  transition: opacity 0.3s ease; 
+} 
+
+#popupOverlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background: rgba(0, 0, 0, 0.6); 
+  justify-content: center; 
+  align-items: center; 
+  opacity: 0; 
+  transition: opacity 0.3s ease; 
+} 
+
+.popup-box { 
+  background: #000; 
+  color: #fff;
+  position: relative;
+  padding: 24px; 
+  border-radius: 12px; 
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); 
+  width: 320px; 
+  text-align: center; 
+  opacity: 0; 
+  transform: scale(0.8); 
+  animation: fadeInUp 0.5s ease-out forwards; 
+} 
+
+.form-container { 
+  display: flex; 
+  flex-direction: column; 
+} 
+
+.form-label { 
+  margin-bottom: 10px; 
+  font-size: 16px; 
+  color: #444; 
+  text-align: left; 
+} 
+
+.form-input { 
+  color: #fff;
+  padding: 10px; 
+  margin-bottom: 20px; 
+  border: 1px solid #6e6e6e; 
+  border-radius: 8px; 
+  font-size: 16px; 
+  width: 100%; 
+  box-sizing: border-box; 
+
+  &::placeholder{
+    color: #6e6e6e;
+    opacity: 1;
+  }
+} 
+
+
+
+.btn-submit { 
+  padding: 12px 24px; 
+  border: none; 
+  border-radius: 50px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease, color 0.3s ease; 
+} 
+
+.btn-submit { 
+  background-color: #6e6e6e; 
+  color: #fff; 
+} 
+
+
+.btn-submit:hover { 
+  background-color: rgb(29 155 240); 
+} 
+
+/* Keyframes for fadeInUp animation */ 
+@keyframes fadeInUp { 
+  from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+  } 
+
+  to { 
+      opacity: 1; 
+      transform: translateY(0); 
+  } 
+} 
+
+ 
 
 /* @media (max-width: 768px) {
   .logo {

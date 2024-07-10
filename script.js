@@ -1,45 +1,34 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+import { getAuth,
+          GoogleAuthProvider,
+        signInWithPopup,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+        onAuthStateChanged
+      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+import{ getDatabase, ref, set, onValue, child, push, update } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
 
-// import {
-//   getStorage,
-//   ref as sRef,
-//   uploadBytesResumable,
-//   getDownloadUrl,
-// } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-storage.js";
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBrVTmXg3LgAvIcJXwmBMopSSfeY3qP4Vo",
-//   authDomain: "twitter-clone-d1a1d.firebaseapp.com",
-//   projectId: "twitter-clone-d1a1d",
-//   storageBucket: "twitter-clone-d1a1d.appspot.com",
-//   messagingSenderId: "718006999931",
-//   appId: "1:718006999931:web:bdf1cfb4507e6a8ced3bde",
-//   measurementId: "G-RCWBNFHYC2",
-// };
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCgCGsbYel0pw5onnY4YoHwgVBED_opdBg",
-    authDomain: "fir-4cceb.firebaseapp.com",
-    databaseURL: "https://fir-4cceb-default-rtdb.firebaseio.com",
-    projectId: "fir-4cceb",
-    storageBucket: "fir-4cceb.appspot.com",
-    messagingSenderId: "1091478649288",
-    appId: "1:1091478649288:web:a78fc0cc780500af47a8fd",
-    measurementId: "G-7XDRW5J8RL"
+  apiKey: "AIzaSyDfPmlLdW3jtmiWRzn-wXym6kz9VDBGnxk",
+  authDomain: "tweeter-pw.firebaseapp.com",
+  databaseURL: "https://tweeter-pw-default-rtdb.firebaseio.com",
+  projectId: "tweeter-pw",
+  storageBucket: "tweeter-pw.appspot.com",
+  messagingSenderId: "1009610719884",
+  appId: "1:1009610719884:web:752a6a2fa57046a7cbf1a9"
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-auth.languageCode = "en";
-const provider = new GoogleAuthProvider();
 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+auth.languageCode = "en";
+const provider = new GoogleAuthProvider(app);
+
+//Sign up with Google
 const googleLogin = document.getElementById("google-login-btn");
 googleLogin.addEventListener("click", function () {
   signInWithPopup(auth, provider)
@@ -47,8 +36,21 @@ googleLogin.addEventListener("click", function () {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const user = result.user;
       console.log(user);
-      window.location.replace("./index1.html");
-      updateUserProfile(user);
+      set(ref(database, 'users/' + user.uid), {
+        full_name : user.displayName,
+        email : user.email,
+        display_name: user.displayName,
+        posts: "",
+        last_login : Date.now()
+      })
+      .then(() => {
+        window.location.replace("./Home.html");
+        updateUserProfile(user);
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -57,122 +59,121 @@ googleLogin.addEventListener("click", function () {
       // ...
     });
 });
+
+//Sign up manually
+const acctReg = document.getElementById("btn-submit");
+acctReg.addEventListener("click", function(e) {
+  //pull info from input fields
+  e.preventDefault();
+  email = document.getElementById('email').value;
+  password = document.getElementById('password').value;
+  var full_name = document.getElementById('name').value;
+  var displayName = document.getElementById('username').value;
+  
+
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    set(ref(database, 'users/' + user.uid), {
+      full_name : full_name,
+      email : email,
+      display_name: displayName,
+      posts: "",
+      last_login : Date.now()
+    })
+    .then(() => {
+      updateUserProfile(user);
+      window.location.replace("./Home.html");
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+  
+  
+});
+
+//Sign in with existing account
+const signIn = document.getElementById("sign-in-btn");
+signIn.addEventListener("click", function(e) {
+  //pull info from input fields
+  e.preventDefault();
+  email = document.getElementById('sign-in-email').value;
+  password = document.getElementById('sign-in-password').value;
+  
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => { 
+    const user = userCredential.user;
+
+    update(ref(database, 'users/' + user.uid), {
+      last_login : Date.now()
+    })
+    .then(() => {
+      window.location.replace("./Home.html");
+      updateUserProfile(user);
+    })
+    .catch((error) => {
+      console.log(error)
+    });
+
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+  
+  
+});
+
+//Check if user is signed in already
+/*onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    window.location.replace("./Home.html");
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});*/
+
+//Create account popup activation
+const createAcct = document.getElementById("create-acct-btn");
+createAcct.addEventListener("click", function() {
+  const overlay = document.getElementById('popupOverlay'); 
+   overlay.style.display = "flex";
+   overlay.style.opacity = "1";
+});
+
+//Sign in popup activation
+const signInPopup = document.getElementById("sign-on-btn");
+signInPopup.addEventListener("click", function() {
+  const overlay = document.getElementById('signInOverlay'); 
+   overlay.style.display = "flex";
+   overlay.style.opacity = "1";
+});
+
+
+
+//Get user info from database for profile pages
 function updateUserProfile(user) {
-  const userName = user.displayName;
-  const userEmail = user.email;
-  const userProfilePicture = user.photoURL;
-  localStorage.setItem("username", user.displayName);
-  localStorage.setItem("profilepicture", user.photoURL);
-  console.dir(user.photoURL);
-  document.getElementById("userName").textContent = userName;
-  document.getElementById("userProfilePicture").src = userProfilePicture;
-  I;
-}
-// const logoutButton = document.getElementById("logoutbtn");
-
-// logoutButton.addEventListener("click", function () {
-//   console.log("clicked");
-//   auth
-//     .signOut()
-//     .then(() => {
-//       // Sign-out successful.
-//       console.log("User signed out successfully");
-//       // Redirect to index.html
-//       window.location.replace("./index.html");
-//     })
-//     .catch((error) => {
-//       // An error happened.
-//       console.error("Error signing out:", error);
-//     });
-// });
-
-//  updateUserProfile();
-
-// let files = [];
-// let reader = newFileReader();
-// var namebox = document.getElementById("namebox");
-// var extlab = document.getElementById("extlab");
-// var myimg = document.getElementById("myimg");
-// var proglab = document.getElementById("upprogress");
-// var SelBtn = document.getElementById("posting");
-// var UpBtn = document.getElementById("upbtn");
-// var DownBtn = document.getElementById("downbtn");
-// var input = document.createElement("input");
-// input.type = "file";
-// input.onchange = (e) => {
-//   files = e.target.files;
-
-//   var extention = getfileExt(files[0]);
-//   var name = getFileName(files[0]);
-
-//   namebox.value = name;
-//   extlab.innerHTML = extention;
-//   reader.readAsDataURL(files[0]);
-// };
-
-// reader.onload = function () {
-//   myimg.src = reader.result;
-// };
-
-// SelBtn.onclick = function () {
-//   input.click();
-// };
-// function GetFileExt(file) {
-//   var temp = file.name.split(".");
-//   var ext = temp.slice(temp.length - 1, temp.length);
-//   return "." + ext[0];
-// }
-// function GetFileName(file) {
-//   var temp = file.name.split(".");
-//   var fname = temp.slice(0, -1).join(".");
-//   return fname;
-// }
-
-// async function UploadProcess() {
-//   var ImgToUpload = files[0];
-//   var ImgName = namebox.value + extlab.innerHTML;
-//   const metaData = {
-//     contentType: ImgToUpload.type,
-//   };
-//   const storage = getStorage();
-//   const stroageRef = sRef(storage, "Images/" + ImgName);
-//   const UploadTask = uploadBytesResumable(stroageRef, ImgToUpload, metaData);
-//   UploadTask.on(
-//     "state-changed",
-//     (snapshot) => {
-//       var progess = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-//     },
-//     (error) => {
-//       alert("error: image not uploaded!");
-//     },
-//     () => {
-//       getDownloadURL(UploadTask.snapshot.ref).then((downloadURL) => {
-//         console;
-//       });
-//     }
-//   );
-// }
-
-// firebase.initializeApp(firebaseConfig);
-
-// const fileInput = document.getElementById("fileInput");
-// function handleFileUpload() {
-//   const file = fileInput.files[0];
-//   const storageRef = firebase.storage().ref();
-//   const fileRef = storageRef.child(file.name);
-//   fileRef
-//     .put(file)
-//     .then(() => {
-//       console.log("File uploaded successfully");
-//     })
-//     .catch((error) => {
-//       console.error("Error uploading file:", error);
-//     });
-// }
-
-// var fileItem;
-// var fileName;
-// function getFile(e) {
-//   fileItem = e.target.files[0];
-//   fileName = fileItem.name;
-// }
+  const displayNameRef = ref(database, 'users/' + user.uid + '/display_name');
+  const userEmailRef = ref(database, 'users/' + user.uid + '/email');
+  onValue(displayNameRef, (snapshot) => {
+    var displayNameValue = snapshot.val();
+    localStorage.setItem("username", displayNameValue);
+  });
+  onValue(userEmailRef, (snapshot) => {
+    var userEmailValue = snapshot.val();
+    localStorage.setItem("profilepicture", userEmailValue);
+  });
+  
+  document.getElementById("username").innerHTML = localStorage.getItem("username");
+};

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home / X</title>
+    <link rel="stylesheet" href="style1.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <main>
+      <section class="sidebar">
+        <div class="logo">
+          <a href="./Home.html"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+        <ul>
+          <li>
+            <a href="./Home.html"><i class="fa-solid fa-house"></i>Home</a>
+          </li>
+          <li>
+            <a href="explore"
+              ><i class="fa-solid fa-magnifying-glass"></i>Explore</a
+            >
+          </li>
+          <li>
+            <a href="notifications"
+              ><i class="fa-solid fa-bell"></i>Notifications</a
+            >
+          </li>
+          <li>
+            <a href="Messages"><i class="fa-solid fa-message"></i>Message</a>
+          </li>
+          <li>
+            <a href="Grok"><i class="fa-solid fa-layer-group"></i>Grok</a>
+          </li>
+          <li>
+            <a href="Lists"><i class="fa-solid fa-list"></i>Lists</a>
+          </li>
+          <li>
+            <a href="Bookmarks"
+              ><i class="fa-solid fa-bookmark"></i>Bookmarks</a
+            >
+          </li>
+
+          <li>
+            <a href="Premium"
+              ><i class="fa-brands fa-x-twitter"></i>Premium</a
+            >
+          </li>
+          <li>
+            <a href="Profile"><i class="fa-solid fa-user"></i>Profile</a>
+          </li>
+          <li>
+            <a href="More"><i class="fa-solid fa-bars"></i>More</a>
+          </li>
+        </ul>
+        <button id="createPost" class="post">Post</button>
+        <div id="postPopup" class="overlay-container" style="display:none"> 
+            <div class="popup" id="popup">
+              <div class="postform">
+                  <textarea
+                    name=""
+                    id="post-text"
+                    cols="60"
+                    rows="10"
+                    class="posttext"
+                    placeholder="What's happening..."
+                  ></textarea>
+              </div>
+              <a href="./everyonecanreply" class="everyone"
+                >Everyone can reply</a
+              >
+              <div class="uploadOptions">
+                <div class="uploads">
+                  <a href=""><i class="fa-solid fa-photo-film upload"></i></a
+                  ><a href=""><i class="fa-solid fa-gift upload"></i></a
+                  ><a href=""><i class="fa-solid fa-ellipsis upload"></i></a
+                  ><a href=""><i class="fa-solid fa-face-smile upload"></i></a
+                  ><a href=""
+                    ><i class="fa-solid fa-location-dot upload"></i
+                  ></a>
+                </div>
+                <button class="posting" id="post-feed-btn">Post</button>
+              </div>
+              <a class="closebuttonpopup" id="closebuttonpopup">X</a>
+            </div>
+          </div>      
+        <div class="user-details">
+          <p id="username"></p>
+          <button class="logout" id="logoutbtn">Log out</button>
+          <img src="" alt="" id="userProfilePicture" />
+          <div class="profpicture" id="profpicture"></div>
+        </div>
+      </section>
+      <section class="full-feed">
+        <div class="feed">
+          <div class="feed-tabs">
+            <div class="box">
+              <div class="fy">
+                <h2>For you</h2>
+              </div>
+            </div>
+            <div class="box">
+              <div class="following"><h2>Following</h2></div>
+            </div>
+          </div>
+          <div id="post-to-feed" style="display: flex;"> 
+            <div id="ProfilePicture">
+              <img src="" alt="" id="userProfilePicture" style="display: none;"/>
+              <i class="fa-regular fa-user"></i>
+            </div>
+            <div style="max-width: 90%;">
+              <div class="postform" style="max-height: 50px;">
+                  <textarea
+                    name=""
+                    style="max-height: 50px;"
+                    id="post-text"
+                    cols="60"
+                    rows="10"
+                    class="posttext"
+                    placeholder="What's happening..."
+                  ></textarea>
+              </div>
+              <a href="./everyonecanreply" class="everyone"
+                >Everyone can reply</a
+              >
+              <div class="uploadOptions">
+                <div class="uploads">
+                  <a href=""><i class="fa-solid fa-photo-film upload"></i></a
+                  ><a href=""><i class="fa-solid fa-gift upload"></i></a
+                  ><a href=""><i class="fa-solid fa-ellipsis upload"></i></a
+                  ><a href=""><i class="fa-solid fa-face-smile upload"></i></a
+                  ><a href=""
+                    ><i class="fa-solid fa-location-dot upload"></i
+                  ></a>
+                </div>
+                <button class="posting" id="feed-post-btn">Post</button>
+              </div>
+            </div>
+            </div>      
+          <div class="feed-stream">
+            <div class="posts">
+              <div class="postBox">
+                <div class="feed-post"><i id="deletePost" class="fa-solid fa-trash"></i></div>
+                <i class="fa-solid fa-comment"></i>
+                <i class="fa-solid fa-retweet"></i>
+                <i class="fa-solid fa-heart"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="news-feed">
+        <div class="search">
+          <input type="text" placeholder="Search" class="searchbox" />
+        </div>
+        <div class="premium">
+          <h2>Subscribe to Premium</h2>
+          <p>
+            Subscribe to unlock new features and if eligible, receive a share of
+            ads revenue.
+          </p>
+          <button class="premium-btn">Subscribe</button>
+        </div>
+        <div class="trending">
+          <h2>What's happening</h2>
+          <div class="wrestlemania">
+            <div class="img"></div>
+            <div class="boxx">
+              <h2 class="xyz">WrestleMania XL</h2>
+              <p>Wrestling · April 8, 2024</p>
+            </div>
+          </div>
+          <div class="trend">
+            <p class="title">Trending in India</p>
+            <p class="hash">#RajatDalalvsDhruvRathee</p>
+            <p class="postscount">460.7K posts</p>
+          </div>
+          <div class="trend">
+            <p class="title">Entertainment · Trending</p>
+            <p class="hash">#BadeMiyanChoteMiyan</p>
+            <p class="postscount">37.6K posts</p>
+          </div>
+          <div class="trend">
+            <p class="title">Trending in India</p>
+            <p class="hash">#ModiDownDown</p>
+            <p class="postscount">34.6K posts</p>
+          </div>
+          <div class="trend">
+            <p class="title">Trending · VIT'V</p>
+            <p class="hash">#GDSC_KeAageKoiBolSaktaHaiKya</p>
+            <p class="postscount">10.9K posts</p>
+          </div>
+          <a href="#showmore" class="showmore">Show more</a>
+        </div>
+      </section>
+    </main>
+    <script src="script.js" type="module"></script>
+    <script type="module">
+      import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+      import{ getDatabase, ref, set, onValue, child, push, update, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+
+      const auth = getAuth();
+      const database = getDatabase();
+      //check if user is logged in
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in
+          const uid = user.uid;
+          updateUserProfile(user);
+
+        const postArray = [];
+        const postRef = ref(database, 'users/' + user.uid + '/posts');
+        onValue(postRef, (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+          const childKey = childSnapshot.key;
+          const childData = childSnapshot.val();
+          postArray.push([childKey, childData.post]);
+          });
+        console.log(postArray);
+        console.log(postArray[0][1]);
+        });
+
+        populateFeed();
+          
+      //new tweet popup
+      const createPost = document.getElementById("createPost");
+      createPost.addEventListener("click", () => {
+        console.log('click')
+        const overlay = document.getElementById('postPopup'); 
+        overlay.style.display = "flex";
+        overlay.style.opacity = "1";
+      });
+
+      //post tweet
+      const postToFeed = document.getElementById("post-feed-btn");
+      postToFeed.addEventListener("click", (e) => {
+        e.preventDefault();
+        var postText = document.getElementById("post-text");
+        var postValue = postText.value;
+        var newPost = ref(database, 'users/' + user.uid + '/posts');
+        console.log(user.uid)
+        set(push(newPost), {
+          post: postValue,
+          date: Date.now()
+        })
+        .then(() => {
+          const overlay = document.getElementById('postPopup'); 
+          overlay.style.display = "none";
+          overlay.style.opacity = "0";
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+      });
+
+      //post tweet
+      const feedPostBtn = document.getElementById("feed-post-btn");
+      feedPostBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        var postText = document.getElementById("post-text");
+        var postValue = postText.value;
+        var newPost = ref(database, 'users/' + user.uid + '/posts');
+        console.log(user.uid)
+        set(push(newPost), {
+          post: postValue,
+          date: Date.now()
+        })
+        .then(() => {
+          const overlay = document.getElementById('postPopup'); 
+          overlay.style.display = "none";
+          overlay.style.opacity = "0";
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+      });
+
+      const closePostToFeed = document.getElementById("closebuttonpopup");
+      closePostToFeed.addEventListener("click", () => {
+        const overlay = document.getElementById('postPopup'); 
+        document.getElementById("post-text").value = '';
+        overlay.style.display = "none";
+        overlay.style.opacity = "0";
+      })
+
+      const signOutBtn = document.getElementById("logoutbtn");
+      signOutBtn.addEventListener("click", () => {
+        console.log('signed out')
+        signOut(auth).then(()=>{
+          //Sign-out successful.
+          window.location.replace("./index.html");
+        }).catch((error) => {
+          //An error occurred.
+        })
+      })
+
+       
+       function populateFeed(){
+        const posts = document.getElementById("posts");
+        const createDiv = document.createElement("div");
+        const createIcon = document.createElement("i");
+
+        //createDiv.className = "postBox";
+        //createDiv.className = "feed-post";
+        //createIcon.className = "fa-solid fa-trash";
+        //createIcon.className = "fa-solid fa-comment";
+        //createIcon.className = "fa-solid fa-retweet";
+        //createIcon.className = "fa-solid fa-heart";
+        
+        //loop to build feed
+        for(let i=0; i<postArray.length; i++){
+        }
+      };
+ 
+      document.getElementById("deletePost").addEventListener("click", () =>{
+        //delete related post from database
+      })
+
+      //Get user info from database for profile pages
+      function updateUserProfile(user) {
+        const displayNameRef = ref(database, 'users/' + user.uid + '/display_name');
+        const userEmailRef = ref(database, 'users/' + user.uid + '/email');
+        onValue(displayNameRef, (snapshot) => {
+          var displayNameValue = snapshot.val();
+          localStorage.setItem("username", displayNameValue);
+        });
+        onValue(userEmailRef, (snapshot) => {
+          var userEmailValue = snapshot.val();
+          localStorage.setItem("profilepicture", userEmailValue);
+        });
+  
+        document.getElementById("username").innerHTML = localStorage.getItem("username");
+      };
+    } else {
+          // User is signed out
+          window.location.replace("./index.html");
+        }   
+      });
+      
+    </script>
+  </body>
+</html>
