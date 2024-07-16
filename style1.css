@@ -375,29 +375,33 @@ html{
     background-color: rgba(169, 169, 169, 0.09);
     margin: 15px 0px;
     border-radius: 12px;
+    color: #fff;
+    height: fit-content;
   
     & i{
-      color: #fff;
       width: 32%;
       align-items: center;
       text-align: center;
+      padding: 10px;
     }
   }
   
   .feed-post {
-    max-height: fit-content;
     position: relative;
-    height: 250px;
     width: 100%;
     border-radius: 12px;
     margin: 8px 0px;
+    padding: 5px 0 0 10px;
   }
   .feed-post i{
     color: #fff;
     position: absolute;
     width: 10px;
-    top: 0;
-    right: 0;
+    top: 5px;
+    right: 10px;
+  }
+  .feed-post i:hover{
+    cursor: pointer;
   }
   .search {
     display: flex;

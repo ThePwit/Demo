@@ -145,13 +145,7 @@
             </div>
             </div>      
           <div class="feed-stream">
-            <div class="posts">
-              <div class="postBox">
-                <div class="feed-post"><i id="deletePost" class="fa-solid fa-trash"></i></div>
-                <i class="fa-solid fa-comment"></i>
-                <i class="fa-solid fa-retweet"></i>
-                <i class="fa-solid fa-heart"></i>
-              </div>
+            <div id='posts' class="posts">
             </div>
           </div>
         </div>
@@ -204,7 +198,7 @@
     <script src="script.js" type="module"></script>
     <script type="module">
       import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
-      import{ getDatabase, ref, set, onValue, child, push, update, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+      import{ getDatabase, ref, set, onValue, get, child, push, update, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
 
       const auth = getAuth();
       const database = getDatabase();
@@ -215,19 +209,22 @@
           const uid = user.uid;
           updateUserProfile(user);
 
-        const postArray = [];
-        const postRef = ref(database, 'users/' + user.uid + '/posts');
-        onValue(postRef, (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-          const childKey = childSnapshot.key;
-          const childData = childSnapshot.val();
-          postArray.push([childKey, childData.post]);
+          const postArray = [];
+          const postRef = ref(database, 'users/' + user.uid + '/posts');
+          get(postRef).then((snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+            const childKey = childSnapshot.key;
+            const childData = childSnapshot.val();
+            postArray.push([childKey, childData.post]);
+            });
+            console.log(postArray)
+          }).then(()=>{
+            populateFeed();
+          }).catch((error)=>{
+            console.log(error);
           });
-        console.log(postArray);
-        console.log(postArray[0][1]);
-        });
 
-        populateFeed();
+        
           
       //new tweet popup
       const createPost = document.getElementById("createPost");
@@ -304,23 +301,42 @@
        
        function populateFeed(){
         const posts = document.getElementById("posts");
-        const createDiv = document.createElement("div");
-        const createIcon = document.createElement("i");
 
-        //createDiv.className = "postBox";
-        //createDiv.className = "feed-post";
-        //createIcon.className = "fa-solid fa-trash";
-        //createIcon.className = "fa-solid fa-comment";
-        //createIcon.className = "fa-solid fa-retweet";
-        //createIcon.className = "fa-solid fa-heart";
-        
+        console.log(posts);
         //loop to build feed
         for(let i=0; i<postArray.length; i++){
+          var postBox = document.createElement("div");
+          postBox.setAttribute('id', postArray[i][0]);
+          postBox.classList = "postBox";
+          var feedPost = document.createElement("div");
+          feedPost.classList = "feed-post";
+          feedPost.innerHTML = postArray[i][1];
+          var trashIcon = document.createElement("i");
+          trashIcon.setAttribute('id', postArray[i][0]+'-del');
+          trashIcon.setAttribute('type', 'button');
+          trashIcon.classList = "fa-solid fa-trash";
+          var commentIcon = document.createElement("i");
+          commentIcon.classList = "fa-solid fa-comment";
+          var retweetIcon = document.createElement("i");
+          retweetIcon.classList = "fa-solid fa-retweet";
+          var heartIcon = document.createElement("i");
+          heartIcon.classList = "fa-solid fa-heart";
+          posts.append(postBox);
+          postBox.append(feedPost);
+          feedPost.append(trashIcon);
+          postBox.append(commentIcon);
+          postBox.append(retweetIcon);
+          postBox.append(heartIcon);
         }
       };
  
-      document.getElementById("deletePost").addEventListener("click", () =>{
+      document.getElementById("posts").addEventListener("click", () =>{
         //delete related post from database
+        const isTrash = event.target.classList === 'fa-trash'
+        if (!isTrash){
+          return;
+        }
+        console.log(event.target.id);
       })
 
       //Get user info from database for profile pages
@@ -337,7 +353,9 @@
         });
   
         document.getElementById("username").innerHTML = localStorage.getItem("username");
+        
       };
+      
     } else {
           // User is signed out
           window.location.replace("./index.html");
